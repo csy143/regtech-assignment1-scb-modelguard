@@ -1,6 +1,6 @@
-CHEN SHIYU
-G2505198B
-shiyu014@e.ntu.edu.sg
+#### CHEN SHIYU
+#### G2505198B
+#### shiyu014@e.ntu.edu.sg
 
 ## Data generation collaboration (5%)
 
