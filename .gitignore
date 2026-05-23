@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.DS_Store
+# ZIP kept in repo for instructor download (optional: uncomment next line to exclude)
+# Assignment1_Session1_SUBMIT.zip
+.ipynb_checkpoints/

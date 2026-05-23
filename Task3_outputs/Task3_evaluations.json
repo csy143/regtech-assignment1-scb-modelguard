@@ -1,0 +1,92 @@
+{
+  "US_OCC": {
+    "jurisdiction": "US_OCC",
+    "display_name": "United States \u2014 OCC Bulletin 2026-13 (traditional MRM)",
+    "model_scope": {
+      "in_scope": true,
+      "rationale": "SCB-CS-001 is a Probability-of-Default style retail credit model using financial and employment features. It is NOT GenAI/agentic AI and therefore remains within OCC 2026-13 development, validation, and monitoring expectations.\n",
+      "genai_excluded": false
+    },
+    "data_handling": {
+      "strip_fields": [
+        "ethnicity",
+        "gender"
+      ],
+      "fairness_under_unawareness": true,
+      "bisg_exploratory_note": "US ECOA / Reg B discourage using race/ethnicity in credit decisioning inputs. Production US feeds should omit ethnicity; optional BISG (surname + geography) may support exploratory fair-lending audits only \u2014 never auto-fail OCC MRM status.\n"
+    },
+    "overall_status": "WARN",
+    "checks": {
+      "performance": {
+        "metric": "auc_drop",
+        "value": 0.01496340477462288,
+        "warn_threshold": 0.05,
+        "fail_threshold": 0.1,
+        "status": "pass",
+        "note": "SCB-CS-001 is a traditional PD-style score; OCC 2026-13 validation triggers apply. GenAI exclusion does not apply to this model."
+      },
+      "drift": {
+        "psi_model_score": 0.46389764122873256,
+        "psi_status": "warn",
+        "low_score_share_increase": 0.0484,
+        "low_score_status": "warn",
+        "status": "warn"
+      },
+      "portfolio_outcomes": {
+        "default_rate_increase": 0.09773333333333334,
+        "status": "warn"
+      },
+      "fairness": {
+        "status": "advisory",
+        "enabled": false,
+        "message": "Ethnicity/gender disparity statistics are suppressed in US mode. Run optional BISG exploratory module separately; findings are litigation/ESG advisory only.\n"
+      }
+    },
+    "escalation": "Trigger independent model validation review under OCC 2026-13 (backtesting, benchmarking, trigger-based revalidation). Document for audit trail.\n"
+  },
+  "SG_MAS": {
+    "jurisdiction": "SG_MAS",
+    "display_name": "Singapore \u2014 MAS FEAT / AI MRM (2024\u20132025)",
+    "model_scope": {
+      "in_scope": true,
+      "rationale": "Same SCB-CS-001 model deployed in Singapore; native ethnicity permitted for conduct and FEAT outcome monitoring alongside prudential performance tests.\n"
+    },
+    "data_handling": {
+      "strip_fields": [],
+      "fairness_under_unawareness": false,
+      "use_native_ethnicity": true
+    },
+    "overall_status": "FAIL",
+    "checks": {
+      "performance": {
+        "metric": "auc_drop",
+        "value": 0.01496340477462288,
+        "warn_threshold": 0.03,
+        "fail_threshold": 0.06,
+        "status": "pass",
+        "note": "SCB-CS-001 is a traditional PD-style score; OCC 2026-13 validation triggers apply. GenAI exclusion does not apply to this model."
+      },
+      "drift": {
+        "psi_model_score": 0.46389764122873256,
+        "psi_status": "fail",
+        "low_score_share_increase": 0.0484,
+        "low_score_status": "fail",
+        "status": "fail"
+      },
+      "portfolio_outcomes": {
+        "default_rate_increase": 0.09773333333333334,
+        "status": "warn"
+      },
+      "fairness": {
+        "status": "pass",
+        "enabled": true,
+        "arr_live_min": 0.9790288529204786,
+        "arr_ethnicity_floor": 0.8,
+        "arr_status": "pass",
+        "gender_arr": 0.9989571166360753,
+        "gender_status": "pass"
+      }
+    },
+    "escalation": "Recommend pause on live rollout expansion; root-cause on drift + FEAT outcome review; prepare committee pack for Singapore governance forum.\n"
+  }
+}

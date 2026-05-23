@@ -1,0 +1,36 @@
+model_id: SCB-CS-001
+model_name: SCB Retail Credit Scoring (PD-style score)
+owner: Standard Chartered Bank — Retail Credit Risk
+purpose: Rank-order retail loan applicants by creditworthiness for approve/decline and pricing
+model_type: traditional_statistical_ml  # NOT GenAI — in scope for OCC 2026-13 traditional MRM
+
+training_period: "2022-2023"
+deployment_period: "2025-2026"
+score_interpretation: >
+  model_score in [0,1]; higher score indicates lower predicted default risk (better applicant).
+  For discrimination metrics, default probability proxy = 1 - model_score.
+
+inputs:
+  - age
+  - income_sgd
+  - loan_amount_sgd
+  - loan_tenure_months
+  - credit_history_months
+  - num_existing_loans
+  - employment_status
+  - debt_to_income
+  - postal_district
+protected_attributes:
+  us_mode: stripped_at_ingest  # ECOA / fairness-under-unawareness
+  sg_mode: [ethnicity, gender]  # FEAT outcome monitoring
+
+known_limitations:
+  - Synthetic demonstration data; not production loan book
+  - No macro overlay series beyond employment mix in sample
+  - US fair lending exploratory path (BISG) not implemented — documented stub only
+  - Does not auto-retrain or change approval rules
+
+failure_modes:
+  - Distribution shift between training and live economies
+  - Calibration drift when portfolio default rate rises
+  - Jurisdictional misconfiguration applying SG fairness rules to US data path

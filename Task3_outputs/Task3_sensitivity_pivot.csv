@@ -1,0 +1,6 @@
+scenario,SG_MAS,US_OCC
+baseline,FAIL,WARN
+default_shock,FAIL,WARN
+fairness_stress_sg,FAIL,WARN
+income_shock,FAIL,WARN
+score_inflation,FAIL,WARN

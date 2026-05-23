@@ -1,0 +1,168 @@
+{
+  "performance": {
+    "auc_train": 0.6311994494160645,
+    "auc_live": 0.6162360446414417,
+    "auc_drop": 0.01496340477462288,
+    "gini_train": 0.2623988988321291,
+    "gini_live": 0.23247208928288332,
+    "default_rate_train": 0.2486,
+    "default_rate_live": 0.3463333333333333,
+    "default_rate_increase": 0.09773333333333334,
+    "approval_rate_train": 0.9848,
+    "approval_rate_live": 0.9,
+    "calibration_live_by_decile": [
+      {
+        "decile": "(0.0365, 0.45]",
+        "mean_score": 0.35880433333333334,
+        "actual_default_rate": 0.5566666666666666,
+        "count": 300
+      },
+      {
+        "decile": "(0.45, 0.525]",
+        "mean_score": 0.4909603333333333,
+        "actual_default_rate": 0.43666666666666665,
+        "count": 300
+      },
+      {
+        "decile": "(0.525, 0.572]",
+        "mean_score": 0.5499953642384107,
+        "actual_default_rate": 0.40066225165562913,
+        "count": 302
+      },
+      {
+        "decile": "(0.572, 0.611]",
+        "mean_score": 0.5910743333333333,
+        "actual_default_rate": 0.35,
+        "count": 300
+      },
+      {
+        "decile": "(0.611, 0.651]",
+        "mean_score": 0.6306734899328859,
+        "actual_default_rate": 0.3523489932885906,
+        "count": 298
+      },
+      {
+        "decile": "(0.651, 0.692]",
+        "mean_score": 0.6724385382059801,
+        "actual_default_rate": 0.32558139534883723,
+        "count": 301
+      },
+      {
+        "decile": "(0.692, 0.736]",
+        "mean_score": 0.7125872909698997,
+        "actual_default_rate": 0.2909698996655518,
+        "count": 299
+      },
+      {
+        "decile": "(0.736, 0.783]",
+        "mean_score": 0.7596306666666667,
+        "actual_default_rate": 0.27666666666666667,
+        "count": 300
+      },
+      {
+        "decile": "(0.783, 0.845]",
+        "mean_score": 0.8098523333333335,
+        "actual_default_rate": 0.26,
+        "count": 300
+      },
+      {
+        "decile": "(0.845, 0.99]",
+        "mean_score": 0.9061393333333333,
+        "actual_default_rate": 0.21333333333333335,
+        "count": 300
+      }
+    ]
+  },
+  "drift": {
+    "psi_model_score": 0.46389764122873256,
+    "psi_income_sgd": 0.04948220071604366,
+    "psi_debt_to_income": 0.030694033017342463,
+    "low_score_share_train": 0.0086,
+    "low_score_share_live": 0.057,
+    "low_score_share_increase": 0.0484,
+    "median_income_train": 47832.0,
+    "median_income_live": 42454.0,
+    "mean_loan_train": 77580.4694,
+    "mean_loan_live": 92348.97133333333,
+    "unemployment_rate_train": 0.0282,
+    "unemployment_rate_live": 0.06666666666666667
+  },
+  "fairness": {
+    "enabled": true,
+    "reference_group": "Chinese",
+    "train": [
+      {
+        "ethnicity": "Chinese",
+        "n": 3743,
+        "approval_rate": 0.9839700774779588,
+        "default_rate": 0.24312049158429067,
+        "arr_vs_reference": 1.0,
+        "default_ratio_vs_reference": 1.0
+      },
+      {
+        "ethnicity": "Indian",
+        "n": 438,
+        "approval_rate": 0.9840182648401826,
+        "default_rate": 0.273972602739726,
+        "arr_vs_reference": 1.0000489723857735,
+        "default_ratio_vs_reference": 1.1269004967635103
+      },
+      {
+        "ethnicity": "Malay",
+        "n": 613,
+        "approval_rate": 0.9902120717781403,
+        "default_rate": 0.2544861337683524,
+        "arr_vs_reference": 1.0063436830479444,
+        "default_ratio_vs_reference": 1.0467490095548824
+      },
+      {
+        "ethnicity": "Other",
+        "n": 206,
+        "approval_rate": 0.9854368932038835,
+        "default_rate": 0.2766990291262136,
+        "arr_vs_reference": 1.0014907117192875,
+        "default_ratio_vs_reference": 1.1381147978235358
+      }
+    ],
+    "live": [
+      {
+        "ethnicity": "Chinese",
+        "n": 2256,
+        "approval_rate": 0.899822695035461,
+        "default_rate": 0.3541666666666667,
+        "arr_vs_reference": 1.0,
+        "default_ratio_vs_reference": 1.0
+      },
+      {
+        "ethnicity": "Indian",
+        "n": 257,
+        "approval_rate": 0.9105058365758755,
+        "default_rate": 0.32684824902723736,
+        "arr_vs_reference": 1.011872496214372,
+        "default_ratio_vs_reference": 0.9228656443121995
+      },
+      {
+        "ethnicity": "Malay",
+        "n": 361,
+        "approval_rate": 0.9002770083102493,
+        "default_rate": 0.34349030470914127,
+        "arr_vs_reference": 1.0005048919940505,
+        "default_ratio_vs_reference": 0.9698549780022812
+      },
+      {
+        "ethnicity": "Other",
+        "n": 126,
+        "approval_rate": 0.8809523809523809,
+        "default_rate": 0.25396825396825395,
+        "arr_vs_reference": 0.9790288529204786,
+        "default_ratio_vs_reference": 0.7170868347338935
+      }
+    ],
+    "arr_live_min": 0.9790288529204786,
+    "arr_train_min": 1.0000489723857735,
+    "gender_live": {
+      "reference": "M",
+      "arr_female_vs_male": 0.9989571166360753
+    }
+  }
+}

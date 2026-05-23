@@ -1,0 +1,110 @@
+# SCB ModelGuard — jurisdiction rule engine (versioned)
+# SCB-CS-001 is a traditional retail PD / credit scoring model (NOT GenAI).
+# OCC 2026-13 explicitly excludes GenAI/agentic AI only; traditional MRM still applies in the US.
+
+version: "1.0.0"
+model_id: SCB-CS-001
+entity: Standard Chartered Bank
+
+jurisdictions:
+  US_OCC:
+    display_name: "United States — OCC Bulletin 2026-13 (traditional MRM)"
+    regulatory_refs:
+      - "OCC Bulletin 2026-13 (Apr 2026) — replaces SR 11-7 for banks >$30bn"
+      - "Regulation B rewrite trajectory — statistical fairness de-emphasised"
+    model_scope:
+      in_scope: true
+      rationale: >
+        SCB-CS-001 is a Probability-of-Default style retail credit model using
+        financial and employment features. It is NOT GenAI/agentic AI and therefore
+        remains within OCC 2026-13 development, validation, and monitoring expectations.
+      genai_excluded: false  # false = this model is NOT excluded; GenAI products would be true
+    data_handling:
+      strip_fields: [ethnicity, gender]
+      fairness_under_unawareness: true
+      bisg_exploratory_note: >
+        US ECOA / Reg B discourage using race/ethnicity in credit decisioning inputs.
+        Production US feeds should omit ethnicity; optional BISG (surname + geography)
+        may support exploratory fair-lending audits only — never auto-fail OCC MRM status.
+    rules:
+      performance:
+        auc_drop_warn: 0.05
+        auc_drop_fail: 0.10
+        weight: 1.0
+      drift:
+        psi_score_warn: 0.20
+        psi_score_fail: 0.55   # principles-based: material shift → validation, higher bar for FAIL
+        low_score_share_increase_warn: 0.03
+        low_score_share_increase_fail: 0.15
+        weight: 1.0
+      fairness:
+        enabled: false
+        advisory_only: true
+        arr_ethnicity_floor: null
+        arr_gender_floor: null
+        weight: 0.0
+      portfolio_outcomes:
+        default_rate_increase_warn: 0.08
+        default_rate_increase_fail: 0.15
+        weight: 0.7
+    aggregation:
+      # US: FAIL only when core MRM metrics jointly breach (performance + drift hard fail)
+      fail_requires_all: [performance_fail, drift_fail]
+      warn_if_any: [performance_warn, drift_warn, portfolio_outcomes_warn]
+    escalation:
+      pass: "Continue scheduled monitoring per model inventory."
+      warn: >
+        Trigger independent model validation review under OCC 2026-13
+        (backtesting, benchmarking, trigger-based revalidation). Document for audit trail.
+      fail: >
+        Escalate to US Model Risk Committee — insufficient model risk management
+        may constitute unsafe/unsound practice notwithstanding non-binding guidance text.
+      fairness_advisory: >
+        Ethnicity/gender disparity statistics are suppressed in US mode.
+        Run optional BISG exploratory module separately; findings are litigation/ESG advisory only.
+
+  SG_MAS:
+    display_name: "Singapore — MAS FEAT / AI MRM (2024–2025)"
+    regulatory_refs:
+      - "MAS FEAT Principles — fairness, ethics, accountability, transparency"
+      - "MAS AI MRM — ongoing monitoring, robustness under distribution shift"
+    model_scope:
+      in_scope: true
+      rationale: >
+        Same SCB-CS-001 model deployed in Singapore; native ethnicity permitted for
+        conduct and FEAT outcome monitoring alongside prudential performance tests.
+    data_handling:
+      strip_fields: []
+      fairness_under_unawareness: false
+      use_native_ethnicity: true
+    rules:
+      performance:
+        auc_drop_warn: 0.03
+        auc_drop_fail: 0.06
+        weight: 1.0
+      drift:
+        psi_score_warn: 0.15
+        psi_score_fail: 0.25
+        low_score_share_increase_warn: 0.03
+        low_score_share_increase_fail: 0.04
+        weight: 1.0
+      fairness:
+        enabled: true
+        advisory_only: false
+        reference_group: Chinese
+        arr_ethnicity_floor: 0.80
+        arr_gender_floor: 0.85
+        weight: 0.9
+      portfolio_outcomes:
+        default_rate_increase_warn: 0.05
+        default_rate_increase_fail: 0.10
+        weight: 0.8
+    aggregation:
+      fail_if_any: [performance_fail, drift_fail, fairness_fail, portfolio_outcomes_fail]
+      warn_if_any: [performance_warn, drift_warn, fairness_warn, portfolio_outcomes_warn]
+    escalation:
+      pass: "Continue live monitoring; log metrics to MAS-ready governance pack."
+      warn: "Enhanced monitoring plan within 30 days; notify model owner and CCO."
+      fail: >
+        Recommend pause on live rollout expansion; root-cause on drift + FEAT outcome
+        review; prepare committee pack for Singapore governance forum.
